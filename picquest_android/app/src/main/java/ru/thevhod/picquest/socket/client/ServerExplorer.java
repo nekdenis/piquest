@@ -37,7 +37,7 @@ public class ServerExplorer {
             MulticastSocket socket = new MulticastSocket(SERVERPORT);
             InetAddress group = InetAddress.getByName("239.255.255.250");
             socket.joinGroup(group);
-            socket.setSoTimeout(1000*10);
+            socket.setSoTimeout(1000*15);
             while (mRun) {
                 Log.d(TAG,"trying to read multicast message");
                 DatagramPacket packet;

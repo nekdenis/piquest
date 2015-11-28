@@ -22,20 +22,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.StartVideoActivity"
-            android:screenOrientation="sensorLandscape"/>
-        <activity
             android:name=".activity.GridActivity"
-            android:screenOrientation="sensorLandscape"/>
-        <activity
-            android:name=".activity.ChooseTheEndActivity"
-            android:screenOrientation="sensorLandscape"/>
-        <activity
-            android:name=".activity.End1VideoActivity"
-            android:screenOrientation="sensorLandscape"/>
-        <activity
-            android:name=".activity.End2VideoActivity"
-            android:screenOrientation="sensorLandscape"/>
+            android:screenOrientation="sensorLandscape" />
     </application>
 
 </manifest>

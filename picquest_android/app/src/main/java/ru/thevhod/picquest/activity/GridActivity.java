@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,10 @@ public class GridActivity extends SocketActivity implements OnStartDragListener,
     private ItemTouchHelper itemTouchHelper;
     private GridAdapter adapter;
 
+    private Button firstEndButton;
+    private Button secondEndButton;
+    private Button repeatButton;
+
     public static void startActivity(Context context, String ip) {
         Intent starter = new Intent(context, GridActivity.class);
         addIpExtra(starter, ip);
@@ -35,9 +41,18 @@ public class GridActivity extends SocketActivity implements OnStartDragListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
         initView();
+        initListeners();
+        showButtons(false);
     }
 
     private void initView() {
+        firstEndButton = (Button) findViewById(R.id.first_end_button);
+        secondEndButton = (Button) findViewById(R.id.second_end_button);
+        repeatButton = (Button) findViewById(R.id.repeat_button);
+        initGrid();
+    }
+
+    private void initGrid() {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setHasFixedSize(true);
@@ -54,16 +69,67 @@ public class GridActivity extends SocketActivity implements OnStartDragListener,
 
     private List<GridItem> getItems() {
         List<GridItem> list = new ArrayList<>();
-        list.add(new GridItem("http://lorempixel.com/341/240/cats/", 1));
-        list.add(new GridItem("http://lorempixel.com/341/240/cats/", 0));
-        list.add(new GridItem("http://lorempixel.com/341/240/cats/", 2));
-        list.add(new GridItem("http://lorempixel.com/341/240/cats/", 3));
-        list.add(new GridItem("http://lorempixel.com/341/240/cats/", 4));
-        list.add(new GridItem("http://lorempixel.com/341/240/cats/", 5));
-        list.add(new GridItem("http://lorempixel.com/341/240/cats/", 6));
-        list.add(new GridItem("http://lorempixel.com/341/240/cats/", 7));
-        list.add(new GridItem("http://lorempixel.com/341/240/cats/", 8));
+        list.add(new GridItem("p1", 1));
+        list.add(new GridItem("p2", 0));
+        list.add(new GridItem("p3", 2));
+        list.add(new GridItem("p4", 3));
+        list.add(new GridItem("p5", 4));
+        list.add(new GridItem("p6", 5));
+        list.add(new GridItem("p7", 6));
+        list.add(new GridItem("p8", 7));
+        list.add(new GridItem("p9", 8));
         return list;
+    }
+
+    private void initListeners() {
+        firstEndButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendCommand(Command.COMMAND_PLAY, Command.VALUE_PLAY_FIRST_END_VIDEO);
+                showButtons(false);
+            }
+        });
+        secondEndButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendCommand(Command.COMMAND_PLAY, Command.VALUE_PLAY_SECOND_END_VIDEO);
+                showButtons(false);
+            }
+        });
+        repeatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendCommand(Command.COMMAND_PLAY, Command.VALUE_PLAY_INTRO_VIDEO);
+                showButtons(false);
+            }
+        });
+    }
+
+    private void showGrid(boolean showGrid) {
+        if (showGrid) {
+            recyclerView.setVisibility(View.VISIBLE);
+            recyclerView.animate().alpha(1).scaleX(1).scaleY(1).translationYBy(100);
+        } else {
+            recyclerView.animate().alpha(0).scaleX(0.75f).scaleY(0.75f).translationYBy(-100).withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    recyclerView.setVisibility(View.GONE);
+                }
+            });
+        }
+
+    }
+
+    private void showButtons(boolean showAllButtons) {
+        if (showAllButtons) {
+            firstEndButton.animate().scaleX(1).scaleY(1).start();
+            secondEndButton.animate().scaleX(1).scaleY(1).start();
+            repeatButton.animate().scaleX(1).scaleY(1).start();
+        } else {
+            firstEndButton.animate().scaleX(0).scaleY(0).start();
+            secondEndButton.animate().scaleX(0).scaleY(0).start();
+            repeatButton.animate().scaleX(0).scaleY(0).start();
+        }
     }
 
     @Override
@@ -74,7 +140,15 @@ public class GridActivity extends SocketActivity implements OnStartDragListener,
     @Override
     public void onEndDrag() {
         if (isRightOrder(adapter.getGridItems())) {
-            sendCommand(Command.COMMAND_PLAY, "0");
+            showGrid(false);
+            sendCommand(Command.COMMAND_PLAY, Command.VALUE_PLAY_INTRO_VIDEO);
+        }
+    }
+
+    @Override
+    protected void onMessageRecieved(String message) {
+        if (message.contains(Command.COMMAND_FINISHED)) {
+            showButtons(true);
         }
     }
 

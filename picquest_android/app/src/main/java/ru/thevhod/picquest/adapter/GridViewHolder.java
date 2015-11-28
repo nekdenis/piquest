@@ -4,9 +4,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
+import android.widget.LinearLayout;
 
 import ru.thevhod.picquest.R;
 import ru.thevhod.picquest.data.GridItem;
@@ -21,8 +21,12 @@ public class GridViewHolder extends RecyclerView.ViewHolder implements ItemTouch
         imageView = (ImageView) itemView.findViewById(R.id.grid_image);
     }
 
-    public void bind(GridItem item, Context context) {
-        Picasso.with(context).load(item.getImageUrl()+item.getId()).into(imageView);
+    public void bind(GridItem item, Context context, int itemHeight) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.height = itemHeight;
+        itemView.setLayoutParams(params);
+        int drawableResourceId = context.getResources().getIdentifier(item.getResourceName(), "drawable", context.getPackageName());
+        imageView.setImageResource(drawableResourceId);
     }
 
     @Override

@@ -61,6 +61,9 @@ public abstract class SocketActivity extends Activity {
         }
     }
 
+    protected void onMessageRecieved(String message) {
+
+    }
 
     public class connectTask extends AsyncTask<String, String, TCPClient> {
         @Override
@@ -90,6 +93,7 @@ public abstract class SocketActivity extends Activity {
         @Override
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
+            onMessageRecieved(values[0]);
             Log.d("Connection", values[0]);
         }
     }

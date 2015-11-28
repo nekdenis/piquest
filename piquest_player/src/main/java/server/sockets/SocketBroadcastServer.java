@@ -1,4 +1,4 @@
-package server;
+package server.sockets;
 
 
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class SocketBroadcastServer extends Thread {
                 socket.send(packet);
                 System.out.println("sended: " + dString);
                 try {
-                    sleep(1000*2);
+                    sleep(1000*1);
                 } catch (InterruptedException e) {
                 }
             }catch (Exception e){

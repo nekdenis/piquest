@@ -10,7 +10,7 @@ public class GridItem {
         this.id = id;
     }
 
-    public String getImageUrl() {
+    public String getResourceName() {
         return imageUrl;
     }
 
