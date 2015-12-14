@@ -1,5 +1,6 @@
 package ru.thevhod.picquest.activity;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -110,10 +111,25 @@ public class GridActivity extends SocketActivity implements OnStartDragListener,
             recyclerView.setVisibility(View.VISIBLE);
             recyclerView.animate().alpha(1).scaleX(1).scaleY(1).translationYBy(100);
         } else {
-            recyclerView.animate().alpha(0).scaleX(0.75f).scaleY(0.75f).translationYBy(-100).withEndAction(new Runnable() {
+            recyclerView.animate().alpha(0).scaleX(0.75f).scaleY(0.75f).translationYBy(-100).setListener(new Animator.AnimatorListener() {
                 @Override
-                public void run() {
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
                     recyclerView.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
                 }
             });
         }
