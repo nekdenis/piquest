@@ -11,7 +11,7 @@ import java.awt.event.WindowEvent;
 
 public class VideoBoard extends JFrame {
 
-    private static final boolean IS_FULLSCREEN = false;
+    private static final boolean IS_FULLSCREEN = true;
 
     public VideoBoard(SocketMainServer server, String path) {
 
