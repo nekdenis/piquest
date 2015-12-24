@@ -6,25 +6,19 @@ import server.frames.VideoBoard;
 import server.sockets.SocketMainServer;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 
-import javax.swing.*;
-
 public class Main {
     private static String filePath;
 
     public static void main(String[] args) {
+        new NativeDiscovery().discover();
         startPreferencesBoard();
     }
 
     public static void startVideoBoard(SocketMainServer server) {
-        VideoBoard frame = new VideoBoard(server, filePath);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null); // *** center the app ***
-        frame.pack();
-        frame.setVisible(true);
+        new VideoBoard(server, filePath);
     }
 
     public static void startPreferencesBoard() {
-        new NativeDiscovery().discover();
         PreferencesBoard frame = new PreferencesBoard();
         frame.setLocationRelativeTo(null); // *** center the app ***
         frame.pack();

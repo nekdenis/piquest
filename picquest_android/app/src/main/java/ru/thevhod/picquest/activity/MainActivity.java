@@ -80,14 +80,14 @@ public class MainActivity extends Activity {
     }
 
     private void startGridActivity(String ipAddress) {
+        spHelper.putIp(ipAddress);
         GridActivity.startActivity(MainActivity.this, ipAddress);
-        finish();
+//        finish();
     }
 
     private void tryToConnect() {
         String ipAddress = manualConnectIp.getText().toString();
         if (Patterns.IP_ADDRESS.matcher(ipAddress).matches()) {
-            spHelper.putIp(ipAddress);
             startGridActivity(ipAddress);
         } else {
             Toast.makeText(this, "IP_MALFORMED", Toast.LENGTH_SHORT).show();

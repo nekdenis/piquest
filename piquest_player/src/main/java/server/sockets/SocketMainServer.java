@@ -77,8 +77,6 @@ public class SocketMainServer extends Thread {
                 // read the message received from client
                 BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
-                sendMessage("Server connected with Android Client now you can chat with socket server.");
-
                 // in this while we wait to receive messages from client (it's an infinite loop)
                 // this while it's like a listener for messages
                 while (running) {
@@ -111,6 +109,7 @@ public class SocketMainServer extends Thread {
 
     private void processReceivedMessage(String message) {
         if (message.contains(MESSAGE_START)) {
+            sendMessage("Server connected with Android Client now you can chat with socket server.");
             System.out.println("Received start message");
             if (connectionListener != null) {
                 connectionListener.connected();
