@@ -11,35 +11,38 @@
 
         <Button
             android:id="@+id/first_end_button"
-            android:layout_width="180dp"
-            android:layout_height="130dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="50dp"
             android:layout_marginLeft="70dp"
             android:gravity="center"
-            android:text="FIRST_END_TEXT"
+            android:text=""
+            android:background="@drawable/destroy"
             android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/second_end_button"
-            android:layout_width="180dp"
-            android:layout_height="130dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|right"
             android:layout_marginBottom="50dp"
             android:layout_marginRight="70dp"
             android:gravity="center"
-            android:text="SECOND_END_TEXT"
+            android:text=""
+            android:background="@drawable/leave"
             android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/repeat_button"
-            android:layout_width="130dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_marginBottom="16dp"
             android:layout_marginRight="16dp"
             android:gravity="center"
-            android:text="REPEAT_TEXT"
+            android:text=""
+            android:background="@drawable/retry"
             android:textColor="@android:color/black" />
     </FrameLayout>
 
