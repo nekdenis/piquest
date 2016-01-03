@@ -78,15 +78,15 @@ public class GridActivity extends SocketActivity implements OnStartDragListener,
 
     private List<GridItem> getItems() {
         List<GridItem> list = new ArrayList<>();
-        list.add(new GridItem("pic_2", 1));
         list.add(new GridItem("pic_1", 0));
+        list.add(new GridItem("pic_2", 1));
+        list.add(new GridItem("pic_9", 8));
+        list.add(new GridItem("pic_8", 7));
+        list.add(new GridItem("pic_7", 6));
+        list.add(new GridItem("pic_6", 5));
         list.add(new GridItem("pic_3", 2));
         list.add(new GridItem("pic_4", 3));
         list.add(new GridItem("pic_5", 4));
-        list.add(new GridItem("pic_6", 5));
-        list.add(new GridItem("pic_7", 6));
-        list.add(new GridItem("pic_8", 7));
-        list.add(new GridItem("pic_9", 8));
         return list;
     }
 
