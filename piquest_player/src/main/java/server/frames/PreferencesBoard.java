@@ -51,7 +51,7 @@ public class PreferencesBoard extends JFrame {
         portLabel.setText("Enter port");
 
         portField = new JTextField();
-        portField.setText("5657");
+        portField.setText("5660");
 
         startServer = new JButton("Start");
         startServer.addActionListener(new ActionListener() {

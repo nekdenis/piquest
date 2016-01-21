@@ -43,11 +43,12 @@ public class SocketMainServer extends Thread {
         try {
             if (mOut != null && !mOut.checkError()) {
                 System.out.println(message);
-                // Here you can connect with database or else you can do what you want with static message
                 mOut.println(message);
                 mOut.flush();
             }
+            System.out.println("not sent message: " + message);
         } catch (Exception e) {
+            System.out.println("Error while sending message: " + message + "cause: " + e.getMessage());
         }
     }
 
@@ -70,10 +71,7 @@ public class SocketMainServer extends Thread {
             try {
                 client = serverSocket.accept();
                 System.out.println("S: Receiving...");
-                // sends the message to the client
                 mOut = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
-                System.out.println("PA: Sent");
-                System.out.println("PA: Connecting Done.");
                 // read the message received from client
                 BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
@@ -85,15 +83,16 @@ public class SocketMainServer extends Thread {
                         processReceivedMessage(message);
                     }
                 }
+                client.close();
             } catch (Exception e) {
-                System.out.println("PA: Error: " + e.getMessage());
+                System.out.println("S: Error: " + e.getMessage());
                 e.printStackTrace();
             } finally {
                 client.close();
-                System.out.println("PA: Done.");
+                System.out.println("S: Done.");
             }
         } catch (Exception e) {
-            System.out.println("PA: Error");
+            System.out.println("S: Error");
             e.printStackTrace();
         }
 
@@ -124,6 +123,10 @@ public class SocketMainServer extends Thread {
         }
     }
 
+    public void stopServer() {
+        running = false;
+    }
+
     /**
      * Declare the interface. The method messageReceived(String message) will
      *
@@ -132,13 +135,13 @@ public class SocketMainServer extends Thread {
      *         class at on configureServer button click
      */
     public interface OnMessageReceived {
-        public void messageReceived(String message);
+        void messageReceived(String message);
     }
 
     public interface OnConnectionChangeListener {
-        public void connected();
+        void connected();
 
-        public void disconnected();
+        void disconnected();
     }
 
 }

@@ -47,6 +47,7 @@ public class SocketBroadcastServer extends Thread {
                 socket.close();
             }
         }
+        socket.close();
     }
 
     private String getComputerInfo() {

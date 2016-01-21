@@ -5,8 +5,11 @@ import server.sockets.SocketBroadcastServer;
 import server.sockets.SocketMainServer;
 
 import javax.swing.*;
-import javax.swing.plaf.FileChooserUI;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * Send broadcast and wait for connections
@@ -25,8 +28,8 @@ public class ConnectionBoard extends JFrame {
         panelFields.setLayout(new BoxLayout(panelFields, BoxLayout.X_AXIS));
 
         initSockets(port);
-
-        message = new JLabel("Waiting for connection");
+        String ipAddr = getIp();
+        message = new JLabel("Waiting for connection at ip: " + ipAddr);
         message.setSize(200, 150);
 
         panelFields.add(message);
@@ -35,7 +38,25 @@ public class ConnectionBoard extends JFrame {
 
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                server.stopServer();
+                System.exit(0);
+            }
+        });
+
         setVisible(true);
+    }
+
+    private String getIp() {
+        InetAddress addr = null;
+        try {
+            addr = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            return "";
+        }
+        return addr.getHostAddress();
     }
 
     private void initSockets(int port) {
@@ -49,6 +70,7 @@ public class ConnectionBoard extends JFrame {
             }, new SocketMainServer.OnConnectionChangeListener() {
                 public void connected() {
                     broadcastServer.stopServer();
+
                     startMainFrame();
                 }
 
@@ -65,5 +87,6 @@ public class ConnectionBoard extends JFrame {
     private void startMainFrame() {
         Main.startVideoBoard(server);
         setVisible(false);
+        dispose();
     }
 }

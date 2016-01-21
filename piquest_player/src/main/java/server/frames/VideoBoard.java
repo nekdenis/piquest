@@ -5,7 +5,6 @@ import server.sockets.SocketMainServer;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -25,17 +24,6 @@ public class VideoBoard extends JFrame {
         final EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 
         mediaPlayerController = new MediaPlayerController(mediaPlayerComponent, this, server, path);
-
-//        GraphicsDevice gd =
-//                GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-//        if (gd.isFullScreenSupported()) {
-//            setUndecorated(true);
-//            gd.setFullScreenWindow(this);
-//        } else {
-//            System.err.println("Full screen not supported");
-//        }
-//        setExtendedState(JFrame.MAXIMIZED_BOTH);
-//        setVisible(true);
 
         addWindowListener(new WindowAdapter() {
             @Override
