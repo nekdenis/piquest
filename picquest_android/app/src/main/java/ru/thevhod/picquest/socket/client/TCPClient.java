@@ -17,7 +17,7 @@ public class TCPClient {
     /**
 	 * Specify the Server Ip Address here. Whereas our Socket Server is started.
 	 * */
-    public static final int SERVERPORT = 5657;
+    public static final int SERVERPORT = 5660;
     private OnMessageReceived mMessageListener = null;
     private boolean mRun = false;
  
