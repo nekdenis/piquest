@@ -20,6 +20,7 @@ public class MediaPlayerController {
     final private EmbeddedMediaPlayer player;
     private String filePrefix;
     private SocketMainServer server;
+    private int lastPlayed = -1;
 
     public MediaPlayerController(EmbeddedMediaPlayerComponent mediaPlayerComponent, JFrame frame, SocketMainServer server, String path) {
         frame.setUndecorated(true);
@@ -37,8 +38,7 @@ public class MediaPlayerController {
         player.addMediaPlayerEventListener(new SimpleMediaPlayerListener() {
             @Override
             public void finished(MediaPlayer mediaPlayer) {
-                System.out.println("Player finished");
-                MediaPlayerController.this.server.sendMessage(COMMAND_FINISHED);
+                onPlayEnd();
             }
 
             @Override
@@ -60,7 +60,15 @@ public class MediaPlayerController {
         player.setFullScreen(true);
         initListeners(mediaPlayerComponent);
         frame.setVisible(true);
-//        playVideo(0);
+    }
+
+    private void onPlayEnd() {
+        System.out.println("Player finished");
+        if (lastPlayed == VALUE_PLAY_INTRO_VIDEO) {
+            MediaPlayerController.this.server.sendMessage(COMMAND_FINISHED_INTRO);
+        } else {
+            MediaPlayerController.this.server.sendMessage(COMMAND_FINISHED_GAME);
+        }
     }
 
     private void initListeners(final Panel panel) {
@@ -115,6 +123,7 @@ public class MediaPlayerController {
 
     private void playVideo(int num) {
         String filePath = getFilePathByNum(num);
+        lastPlayed = num;
         player.playMedia(filePath);
     }
 

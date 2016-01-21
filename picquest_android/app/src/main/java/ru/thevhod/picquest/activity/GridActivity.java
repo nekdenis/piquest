@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ public class GridActivity extends SocketActivity implements OnStartDragListener,
     private Button firstEndButton;
     private Button secondEndButton;
     private Button repeatButton;
+    private TextView winText;
 
     public static void startActivity(Context context, String ip) {
         Intent starter = new Intent(context, GridActivity.class);
@@ -58,6 +60,7 @@ public class GridActivity extends SocketActivity implements OnStartDragListener,
         firstEndButton = (Button) findViewById(R.id.first_end_button);
         secondEndButton = (Button) findViewById(R.id.second_end_button);
         repeatButton = (Button) findViewById(R.id.repeat_button);
+        winText = (TextView) findViewById(R.id.win_logo);
         initGrid();
     }
 
@@ -145,6 +148,9 @@ public class GridActivity extends SocketActivity implements OnStartDragListener,
     }
 
     private void showButtons(boolean showAllButtons) {
+        firstEndButton.setEnabled(showAllButtons);
+        secondEndButton.setEnabled(showAllButtons);
+        repeatButton.setEnabled(showAllButtons);
         if (showAllButtons) {
             firstEndButton.animate().scaleX(1).scaleY(1).start();
             secondEndButton.animate().scaleX(1).scaleY(1).start();
@@ -154,6 +160,13 @@ public class GridActivity extends SocketActivity implements OnStartDragListener,
             secondEndButton.animate().scaleX(0).scaleY(0).start();
             repeatButton.animate().scaleX(0).scaleY(0).start();
         }
+    }
+
+    private void showWinText() {
+        winText.setScaleX(0);
+        winText.setScaleY(0);
+        winText.setVisibility(View.VISIBLE);
+        winText.animate().scaleX(1).scaleY(1).start();
     }
 
     @Override
@@ -171,18 +184,21 @@ public class GridActivity extends SocketActivity implements OnStartDragListener,
 
     @Override
     protected void onMessageRecieved(String message) {
-        if (message.contains(Command.COMMAND_FINISHED)) {
+        if (message.contains(Command.COMMAND_FINISHED_INTRO)) {
             showButtons(true);
+        } else if (message.contains(Command.COMMAND_FINISHED_GAME)) {
+            showWinText();
         }
     }
 
     private boolean isRightOrder(List<GridItem> gridItems) {
-        for (int i = 0; i < gridItems.size() - 1; i++) {
-            GridItem item = gridItems.get(i);
-            if (item.getId() > gridItems.get(i + 1).getId()) {
-                return false;
-            }
-        }
         return true;
+//        for (int i = 0; i < gridItems.size() - 1; i++) {
+//            GridItem item = gridItems.get(i);
+//            if (item.getId() > gridItems.get(i + 1).getId()) {
+//                return false;
+//            }
+//        }
+//        return true;
     }
 }

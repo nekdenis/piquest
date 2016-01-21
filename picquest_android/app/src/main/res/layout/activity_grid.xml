@@ -16,9 +16,9 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="50dp"
             android:layout_marginLeft="70dp"
+            android:background="@drawable/destroy"
             android:gravity="center"
             android:text=""
-            android:background="@drawable/destroy"
             android:textColor="@android:color/black" />
 
         <Button
@@ -28,9 +28,9 @@
             android:layout_gravity="center_vertical|right"
             android:layout_marginBottom="50dp"
             android:layout_marginRight="70dp"
+            android:background="@drawable/leave"
             android:gravity="center"
             android:text=""
-            android:background="@drawable/leave"
             android:textColor="@android:color/black" />
 
         <Button
@@ -40,9 +40,9 @@
             android:layout_gravity="bottom|right"
             android:layout_marginBottom="16dp"
             android:layout_marginRight="16dp"
+            android:background="@drawable/retry"
             android:gravity="center"
             android:text=""
-            android:background="@drawable/retry"
             android:textColor="@android:color/black" />
     </FrameLayout>
 
@@ -52,5 +52,14 @@
         android:layout_height="match_parent"
         android:background="@android:color/black" />
 
+    <TextView
+        android:id="@+id/win_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="ПОБЕДА!"
+        android:textColor="@android:color/white"
+        android:textSize="150dp"
+        android:visibility="gone" />
 
 </FrameLayout>
