@@ -2,6 +2,7 @@ package server.frames;
 
 import server.player.MediaPlayerController;
 import server.sockets.SocketMainServer;
+import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,30 +13,35 @@ public class VideoBoard extends JFrame {
 
     private final MediaPlayerController mediaPlayerController;
 
-    public VideoBoard(SocketMainServer server, String path) {
+    public VideoBoard(final SocketMainServer server, String path) {
 
         super("VideoBoard");
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 500);
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.black);
-        frame.setContentPane(panel);
-        Canvas canvas = new Canvas();
-        canvas.setSize(400, 400);
-        canvas.setBackground(Color.white);
-        panel.add(canvas);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(500, 500);
 
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        setLocationRelativeTo(null);
 
-        mediaPlayerController = new MediaPlayerController(canvas, frame, server, path);
+        final EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+
+        mediaPlayerController = new MediaPlayerController(mediaPlayerComponent, this, server, path);
+
+//        GraphicsDevice gd =
+//                GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+//        if (gd.isFullScreenSupported()) {
+//            setUndecorated(true);
+//            gd.setFullScreenWindow(this);
+//        } else {
+//            System.err.println("Full screen not supported");
+//        }
+//        setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        setVisible(true);
 
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 mediaPlayerController.getPlayer().release();
+                server.stopServer();
                 System.exit(0);
             }
         });

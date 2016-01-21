@@ -2,12 +2,9 @@ package server.player;
 
 import server.sockets.SocketMainServer;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
-import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayer;
-import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.DefaultFullScreenStrategy;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
-import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,25 +12,22 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import static server.protocol.Command.*;
 
 public class MediaPlayerController {
 
+    final private EmbeddedMediaPlayer player;
     private String filePrefix;
     private SocketMainServer server;
-    final private EmbeddedMediaPlayer player;
 
-    public MediaPlayerController(Canvas canvas, JFrame frame, SocketMainServer server, String path) {
-        MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();
+    public MediaPlayerController(EmbeddedMediaPlayerComponent mediaPlayerComponent, JFrame frame, SocketMainServer server, String path) {
+        frame.setUndecorated(true);
         DefaultFullScreenStrategy fsStrat = new DefaultFullScreenStrategy(frame);
+        player = mediaPlayerComponent.getMediaPlayer();
+        player.setFullScreenStrategy(fsStrat);
 
-        CanvasVideoSurface videoSurface = mediaPlayerFactory.newVideoSurface(canvas);
-        player = mediaPlayerFactory.newEmbeddedMediaPlayer(fsStrat);
-
-        player.setVideoSurface(videoSurface);
+        frame.setContentPane(mediaPlayerComponent);
 
         this.filePrefix = path;
         this.server = server;
@@ -43,16 +37,34 @@ public class MediaPlayerController {
         player.addMediaPlayerEventListener(new SimpleMediaPlayerListener() {
             @Override
             public void finished(MediaPlayer mediaPlayer) {
+                System.out.println("Player finished");
                 MediaPlayerController.this.server.sendMessage(COMMAND_FINISHED);
+            }
+
+            @Override
+            public void error(MediaPlayer mediaPlayer) {
+                System.out.println("Player error");
+            }
+
+            @Override
+            public void stopped(MediaPlayer mediaPlayer) {
+                System.out.println("Player stopped");
+            }
+
+            @Override
+            public void paused(MediaPlayer mediaPlayer) {
+                System.out.println("Player paused");
             }
         });
 
         player.setFullScreen(true);
-        initListeners(canvas);
+        initListeners(mediaPlayerComponent);
+        frame.setVisible(true);
+//        playVideo(0);
     }
 
-    private void initListeners(Canvas canvas) {
-        canvas.addMouseListener(new MouseAdapter() {
+    private void initListeners(final Panel panel) {
+        panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
                 if (!player.isFullScreen()) {
@@ -61,7 +73,7 @@ public class MediaPlayerController {
                 }
             }
         });
-        canvas.addKeyListener(new KeyAdapter() {
+        panel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent ke) {
                 if (ke.getKeyCode() == KeyEvent.VK_ESCAPE && player.isFullScreen()) {
